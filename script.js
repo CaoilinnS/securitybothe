@@ -1,7 +1,12 @@
 // Game state
-let currentScenario = 0;
+let currentQuestionIndex = 0;
 let score = 0;
 let level = 1;
+let currentQuestions = [];
+
+// Constants
+const QUESTIONS_PER_GAME = 25; // Number of questions per game session
+const POINTS_PER_QUESTION = 10;
 
 // DOM elements
 const scenarioTitle = document.getElementById('scenario-title');
@@ -15,8 +20,8 @@ const rewardsList = document.getElementById('rewards-list');
 const feedbackElement = document.getElementById('feedback');
 const currentYearElement = document.getElementById('current-year');
 
-// Game scenarios
-const scenarios = [
+// Game scenarios (50 questions)
+const allScenarios = [
     {
         title: "Suspicious Email",
         description: "You receive an email claiming to be from your bank, asking you to click a link and verify your account details. What do you do?",
@@ -49,7 +54,7 @@ const scenarios = [
             "Using cellular data is generally more secure than public Wi-Fi."
         ]
     },
-    // Add 18 more scenarios here...
+    // Add 48 more scenarios here...
 ];
 
 // Rewards data
@@ -63,22 +68,29 @@ const rewards = [
 
 // Function to start the game
 function startGame() {
-    currentScenario = 0;
+    currentQuestionIndex = 0;
     score = 0;
     level = 1;
+    currentQuestions = getRandomQuestions(QUESTIONS_PER_GAME);
     updateUI();
-    loadScenario();
+    loadQuestion();
     setCurrentYear();
 }
 
-// Function to load a scenario
-function loadScenario() {
-    const scenario = scenarios[currentScenario];
-    scenarioTitle.textContent = scenario.title;
-    scenarioDescription.textContent = scenario.description;
+// Function to get random questions
+function getRandomQuestions(num) {
+    const shuffled = [...allScenarios].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, num);
+}
+
+// Function to load a question
+function loadQuestion() {
+    const question = currentQuestions[currentQuestionIndex];
+    scenarioTitle.textContent = question.title;
+    scenarioDescription.textContent = question.description;
     optionsContainer.innerHTML = '';
     
-    scenario.options.forEach((option, index) => {
+    question.options.forEach((option, index) => {
         const button = document.createElement('button');
         button.classList.add('option-button');
         button.textContent = option.text;
@@ -91,23 +103,23 @@ function loadScenario() {
 
 // Function to handle option selection
 function selectOption(index) {
-    const scenario = scenarios[currentScenario];
-    const correct = scenario.options[index].correct;
-    const explanation = scenario.explanations[index];
+    const question = currentQuestions[currentQuestionIndex];
+    const correct = question.options[index].correct;
+    const explanation = question.explanations[index];
 
     if (correct) {
-        score += 10;
+        score += POINTS_PER_QUESTION;
         showFeedback("Correct! " + explanation, true);
     } else {
         showFeedback("Incorrect. " + explanation, false);
     }
     
-    currentScenario++;
-    if (currentScenario >= scenarios.length) {
-        endGame();
+    currentQuestionIndex++;
+    if (currentQuestionIndex >= QUESTIONS_PER_GAME) {
+        setTimeout(endGame, 2000); // End game after 2 seconds
     } else {
         updateUI();
-        setTimeout(loadScenario, 2000); // Load next scenario after 2 seconds
+        setTimeout(loadQuestion, 2000); // Load next question after 2 seconds
     }
 }
 
@@ -129,7 +141,7 @@ function updateUI() {
     level = Math.floor(score / 50) + 1;
     userLevel.textContent = `Level: ${level}`;
 
-    const progress = (currentScenario / scenarios.length) * 100;
+    const progress = (currentQuestionIndex / QUESTIONS_PER_GAME) * 100;
     progressFill.style.width = `${progress}%`;
     progressBar.setAttribute('aria-valuenow', progress);
     
@@ -149,7 +161,7 @@ function updateRewards() {
 
 // Function to end the game
 function endGame() {
-    alert(`Congratulations! You've completed all scenarios. Your final score is ${score}.`);
+    alert(`Congratulations! You've completed the game. Your final score is ${score}. You reached level ${level}!`);
     startGame(); // Restart the game
 }
 
