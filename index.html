@@ -1,25 +1,48 @@
-<section id="game-area" aria-live="polite">
-    <div id="scenario-container">
-        <h2 id="scenario-title">Scenario Title</h2>
-        <p id="scenario-description">Scenario description will appear here.</p>
-    </div>
-    <div id="options-container">
-        <!-- Options will be dynamically inserted here -->
-    </div>
-    <div id="feedback" class="hidden" aria-live="assertive"></div>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Security Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Cyber Security Awareness Game</h1>
+    </header>
 
-<section id="progress-area">
-    <h3>Your Progress</h3>
-    <div id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-        <div id="progress-fill"></div>
-    </div>
-    <p>Question <span id="current-question">1</span> of <span id="total-questions">25</span></p>
-</section>
+    <main>
+        <section id="game-area" aria-live="polite">
+            <div id="scenario-container">
+                <h2 id="scenario-title">Scenario Title</h2>
+                <p id="scenario-description">Scenario description will appear here.</p>
+            </div>
+            <div id="options-container" role="group" aria-labelledby="scenario-title">
+                <!-- Options will be dynamically inserted here -->
+            </div>
+            <div id="feedback" class="hidden" aria-live="assertive"></div>
+        </section>
 
-<section id="rewards-area">
-    <h3>Rewards</h3>
-    <ul id="rewards-list">
-        <!-- Rewards will be dynamically inserted here -->
-    </ul>
-</section>
+        <section id="progress-area">
+            <h3>Your Progress</h3>
+            <div id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div id="progress-fill"></div>
+            </div>
+            <p>Question <span id="current-question">1</span> of <span id="total-questions">25</span></p>
+        </section>
+
+        <section id="rewards-area">
+            <h3>Rewards</h3>
+            <ul id="rewards-list">
+                <!-- Rewards will be dynamically inserted here -->
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; <span id="current-year"></span> Cyber Security Awareness Game</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
