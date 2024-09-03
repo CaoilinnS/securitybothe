@@ -1,53 +1,77 @@
-// Function to load a question
-function loadQuestion() {
-    if (currentQuestionIndex >= currentQuestions.length) {
-        console.error("No more questions available.");
-        endGame(); // Call end game if index is out of bounds
-        return; // Exit function to avoid errors
+document.addEventListener('DOMContentLoaded', function() {
+    const startButton = document.getElementById('start-button');
+    const gameArea = document.getElementById('game-area');
+    const progressArea = document.getElementById('progress-area');
+    const rewardsArea = document.getElementById('rewards-area');
+    const userInfo = document.getElementById('user-info');
+    const feedbackElement = document.getElementById('feedback');
+    const scenarioTitle = document.getElementById('scenario-title');
+    const scenarioDescription = document.getElementById('scenario-description');
+    const optionsContainer = document.getElementById('options-container');
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let currentQuestions = [];
+    
+    startButton.addEventListener('click', startGame);
+
+    function startGame() {
+        gameArea.classList.remove('hidden');
+        progressArea.classList.remove('hidden');
+        rewardsArea.classList.remove('hidden');
+        userInfo.classList.remove('hidden');
+        startButton.classList.add('hidden');
+
+        currentQuestions = getRandomQuestions(25);
+        loadQuestion();
     }
 
-    const question = currentQuestions[currentQuestionIndex];
-    if (!question) {
-        console.error("Question data is undefined.");
-        return; // Exit function if question data is not available
+    function getRandomQuestions(num) {
+        // Simulate fetching random questions
+        return []; // Implement this correctly to fetch questions
     }
 
-    scenarioTitle.textContent = question.title;
-    scenarioDescription.textContent = question.description;
-    optionsContainer.innerHTML = '';
-
-    question.options.forEach((option, index) => {
-        const button = document.createElement('button');
-        button.classList.add('option-button');
-        button.textContent = option.text;
-        button.setAttribute('aria-label', option.text);
-        button.addEventListener('click', () => selectOption(index));
-        optionsContainer.appendChild(button);
-    });
-
-    hideFeedback();
-}
-
-// Function to handle option selection
-function selectOption(index) {
-    const question = currentQuestions[currentQuestionIndex];
-    if (!question) {
-        console.error("Failed to retrieve current question data.");
-        return; // Safety check to prevent runtime errors
-    }
-
-    const correct = question.options[index].correct;
-    const explanation = question.explanations[index];
-
-    showFeedback(correct ? `Correct! ${explanation}` : `Incorrect. ${explanation}`, correct);
-
-    setTimeout(() => {
-        currentQuestionIndex++;
+    function loadQuestion() {
         if (currentQuestionIndex >= currentQuestions.length) {
-            endGame();
-        } else {
-            loadQuestion();
-            updateUI();
+            console.log('No more questions or index out of bounds.');
+            return;
         }
-    }, 2000); // Delay to allow players to read feedback before moving to the next question
-}
+        let question = currentQuestions[currentQuestionIndex];
+        scenarioTitle.textContent = question.title;
+        scenarioDescription.textContent = question.description;
+        optionsContainer.innerHTML = ''; // Clear previous options
+
+        question.options.forEach((option, index) => {
+            let button = document.createElement('button');
+            button.textContent = option.text;
+            button.className = 'option-button';
+            button.onclick = function() { selectOption(option.correct); };
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    function selectOption(isCorrect) {
+        if (isCorrect) {
+            score += 10; // Increment score for correct answer
+            feedbackElement.textContent = 'Correct!';
+            feedbackElement.className = 'correct';
+        } else {
+            feedbackElement.textContent = 'Incorrect!';
+            feedbackElement.className = 'incorrect';
+        }
+        feedbackElement.classList.remove('hidden');
+
+        setTimeout(() => {
+            feedbackElement.classList.add('hidden');
+            if (++currentQuestionIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }, 2000);
+    }
+
+    function endGame() {
+        alert('Game over! Your score: ' + score);
+        document.location.reload(); // Reload the game
+    }
+});
