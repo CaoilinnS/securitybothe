@@ -19,12 +19,14 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    align-items: center; /* Ensure content is centered */
 }
 
 header, footer {
     background-color: var(--primary-color);
     color: var(--white);
     padding: 1rem;
+    width: 100%; /* Full width headers and footers */
     text-align: center;
 }
 
@@ -34,12 +36,13 @@ header h1 {
 }
 
 footer {
-    margin-top: auto;
+    margin-top: auto; /* Keeps the footer at the bottom of the page */
     font-size: 1rem;
 }
 
 main {
     flex-grow: 1;
+    width: 100%; /* Full width main area */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -67,17 +70,19 @@ main {
     background-color: var(--highlight-color);
 }
 
-#game-area, #progress-area, #rewards-area, #user-info {
+.game-area, #progress-area, #rewards-area, #user-info {
     background-color: var(--white);
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 2rem;
     margin-bottom: 2rem;
-    width: 90%;
-    max-width: 800px;
+    width: 90%; /* Responsive width */
+    max-width: 800px; /* Max width to maintain readability */
+    display: flex; /* Ensures content within sections is flex */
+    flex-direction: column;
 }
 
-#game-area.hidden, #progress-area.hidden, #rewards-area.hidden, #user-info.hidden {
+.hidden {
     display: none;
 }
 
@@ -109,7 +114,7 @@ main {
 #progress-fill {
     background-color: var(--primary-color);
     height: 100%;
-    width: 0;
+    width: 0; /* Initial state should show no progress */
     transition: width 0.5s ease-in-out;
 }
 
@@ -119,20 +124,15 @@ main {
     border-radius: 4px;
     font-weight: bold;
     text-align: center;
+    color: var(--white); /* Ensure text is white for visibility */
 }
 
 #feedback.correct {
     background-color: var(--secondary-color);
-    color: var(--white);
 }
 
 #feedback.incorrect {
     background-color: var(--highlight-color);
-    color: var(--white);
-}
-
-.hidden {
-    display: none;
 }
 
 @media (max-width: 600px) {
@@ -145,7 +145,7 @@ main {
         font-size: 0.9rem;
     }
 
-    #game-area, #progress-area, #rewards-area, #user-info {
+    .game-area, #progress-area, #rewards-area, #user-info {
         padding: 1rem;
     }
 }
