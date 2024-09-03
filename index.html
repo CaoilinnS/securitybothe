@@ -11,16 +11,12 @@
         <h1>Cyber Security Awareness Game</h1>
     </header>
 
-    <!-- Start Page -->
-    <div id="start-page" class="start-page">
-        <h2>Welcome to the Cyber Security Awareness Game!</h2>
-        <p>Test your knowledge about online safety and learn how to protect yourself.</p>
-        <button id="start-button">Start Game</button>
-    </div>
+    <main id="main-content">
+        <div id="start-screen">
+            <button id="start-button">Start Game</button>
+        </div>
 
-    <!-- Game Area (Initially hidden) -->
-    <main id="game-container" class="hidden">
-        <section id="game-area" aria-live="polite">
+        <section id="game-area" aria-live="polite" class="hidden">
             <div id="scenario-container">
                 <h2 id="scenario-title">Scenario Title</h2>
                 <p id="scenario-description">Scenario description will appear here.</p>
@@ -31,7 +27,7 @@
             <div id="feedback" class="hidden" aria-live="assertive"></div>
         </section>
 
-        <section id="progress-area">
+        <section id="progress-area" class="hidden">
             <h3>Your Progress</h3>
             <div id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                 <div id="progress-fill"></div>
@@ -39,14 +35,15 @@
             <p>Question <span id="current-question">1</span> of <span id="total-questions">25</span></p>
         </section>
 
-        <section id="rewards-area">
+        <section id="rewards-area" class="hidden">
             <h3>Rewards</h3>
             <ul id="rewards-list">
                 <!-- Rewards will be dynamically inserted here -->
             </ul>
         </section>
 
-        <div id="user-info">
+        <!-- Added missing elements for score and level -->
+        <div id="user-info" class="hidden">
             <p id="user-score">Score: 0</p>
             <p id="user-level">Level: 1</p>
         </div>
@@ -56,6 +53,7 @@
         <p>&copy; <span id="current-year"></span> Cyber Security Awareness Game</p>
     </footer>
 
+    <!-- Ensure the script is loaded after all HTML elements -->
     <script src="script.js"></script>
 </body>
 </html>
