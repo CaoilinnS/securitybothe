@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const allScenarios = [
         {
             title: "Suspicious Email",
-            description: "You receive an email claiming to be from your bank, asking you to click a link and verify your account details. What do you do?",
+            description: "You receive an email claiming to be from your bank asking you to click a link and verify your account details. What do you do?",
             options: [
                 { text: "Click the link and enter your details", correct: false },
                 { text: "Delete the email without clicking anything", correct: true },
@@ -25,13 +25,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 { text: "Forward the email to your friends to warn them", correct: false }
             ],
             explanations: [
-                "This could lead to your account being compromised.",
-                "Good choice! This is the safest option.",
-                "Responding could encourage further phishing attempts.",
-                "This could spread the phishing attempt to others."
+                "Clicking the link could lead to a phishing attack and compromise your personal information.",
+                "Deleting the email is the safest option to avoid potential phishing scams.",
+                "Replying to a suspicious email can confirm to the sender that your email address is active, leading to more phishing attempts.",
+                "Forwarding a suspicious email can spread the potential phishing attack to others."
             ]
         },
-        // Additional 49 scenarios would follow...
+        {
+            title: "Public Wi-Fi",
+            description: "You're at a coffee shop and need to check your bank account. The shop offers free Wi-Fi. What's the best course of action?",
+            options: [
+                { text: "Use the free Wi-Fi to check your account", correct: false },
+                { text: "Wait until you're on a secure network", correct: true },
+                { text: "Ask the barista if the Wi-Fi is secure", correct: false },
+                { text: "Use your phone's data instead of Wi-Fi", correct: true }
+            ],
+            explanations: [
+                "Using public Wi-Fi can expose your personal information to cybercriminals.",
+                "Waiting to use a secure network helps protect your sensitive information from potential cyber threats.",
+                "Baristas are likely not trained in cybersecurity, making this option unreliable.",
+                "Using your phone's cellular data is more secure than public Wi-Fi, especially for sensitive tasks like banking."
+            ]
+        },
+        // Add 48 more scenarios following the structure above.
     ];
 
     function startGame() {
