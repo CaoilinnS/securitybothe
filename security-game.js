@@ -10,7 +10,10 @@ const optionsContainer = document.getElementById('options-container');
 const userScore = document.getElementById('user-score');
 const userLevel = document.getElementById('user-level');
 const progressFill = document.getElementById('progress-fill');
+const progressBar = document.getElementById('progress-bar');
 const rewardsList = document.getElementById('rewards-list');
+const feedbackElement = document.getElementById('feedback');
+const currentYearElement = document.getElementById('current-year');
 
 // Game scenarios
 const scenarios = [
@@ -22,6 +25,12 @@ const scenarios = [
             { text: "Delete the email without clicking anything", correct: true },
             { text: "Reply to the email asking for more information", correct: false },
             { text: "Forward the email to your friends to warn them", correct: false }
+        ],
+        explanations: [
+            "This could lead to your account being compromised.",
+            "Good choice! This is the safest option.",
+            "Responding could encourage further phishing attempts.",
+            "This could spread the phishing attempt to others."
         ]
     },
     {
@@ -32,9 +41,24 @@ const scenarios = [
             { text: "Wait until you're on a secure network", correct: true },
             { text: "Ask the barista if the Wi-Fi is secure", correct: false },
             { text: "Use your phone's data instead of Wi-Fi", correct: true }
+        ],
+        explanations: [
+            "Public Wi-Fi networks are often unsecured and your data could be intercepted.",
+            "Smart decision! It's best to use secure networks for sensitive transactions.",
+            "The staff may not know the security status of the Wi-Fi.",
+            "Using cellular data is generally more secure than public Wi-Fi."
         ]
     },
     // Add 18 more scenarios here...
+];
+
+// Rewards data
+const rewards = [
+    { name: "Security Novice", score: 50 },
+    { name: "Password Pro", score: 100 },
+    { name: "Phishing Detector", score: 150 },
+    { name: "Encryption Expert", score: 200 },
+    { name: "Cyber Guardian", score: 250 }
 ];
 
 // Function to start the game
@@ -44,6 +68,7 @@ function startGame() {
     level = 1;
     updateUI();
     loadScenario();
+    setCurrentYear();
 }
 
 // Function to load a scenario
@@ -60,16 +85,21 @@ function loadScenario() {
         button.addEventListener('click', () => selectOption(index));
         optionsContainer.appendChild(button);
     });
+
+    hideFeedback();
 }
 
 // Function to handle option selection
 function selectOption(index) {
     const scenario = scenarios[currentScenario];
-    if (scenario.options[index].correct) {
+    const correct = scenario.options[index].correct;
+    const explanation = scenario.explanations[index];
+
+    if (correct) {
         score += 10;
-        showFeedback("Correct! Good job staying secure.");
+        showFeedback("Correct! " + explanation, true);
     } else {
-        showFeedback("Oops! That wasn't the safest choice. Here's why: " + getExplanation(currentScenario, index));
+        showFeedback("Incorrect. " + explanation, false);
     }
     
     currentScenario++;
@@ -77,51 +107,37 @@ function selectOption(index) {
         endGame();
     } else {
         updateUI();
-        loadScenario();
+        setTimeout(loadScenario, 2000); // Load next scenario after 2 seconds
     }
 }
 
 // Function to show feedback
-function showFeedback(message) {
-    alert(message); // For simplicity, we're using an alert. In a real app, you'd want a more sophisticated feedback mechanism.
+function showFeedback(message, isCorrect) {
+    feedbackElement.textContent = message;
+    feedbackElement.classList.remove('hidden', 'correct', 'incorrect');
+    feedbackElement.classList.add(isCorrect ? 'correct' : 'incorrect');
 }
 
-// Function to get explanation for incorrect answers
-function getExplanation(scenarioIndex, optionIndex) {
-    // Add explanations for each incorrect option in each scenario
-    const explanations = [
-        ["This could lead to your account being compromised.", "Good choice! This is the safest option.", "Responding could encourage further phishing attempts.", "This could spread the phishing attempt to others."],
-        ["Public Wi-Fi networks are often unsecured and your data could be intercepted.", "Smart decision! It's best to use secure networks for sensitive transactions.", "The staff may not know the security status of the Wi-Fi.", "Using cellular data is generally more secure than public Wi-Fi."],
-        // Add explanations for the other 18 scenarios...
-    ];
-    
-    return explanations[scenarioIndex][optionIndex];
+// Function to hide feedback
+function hideFeedback() {
+    feedbackElement.classList.add('hidden');
 }
 
 // Function to update the UI
 function updateUI() {
     userScore.textContent = `Score: ${score}`;
+    level = Math.floor(score / 50) + 1;
     userLevel.textContent = `Level: ${level}`;
+
     const progress = (currentScenario / scenarios.length) * 100;
     progressFill.style.width = `${progress}%`;
+    progressBar.setAttribute('aria-valuenow', progress);
     
-    // Update level based on score
-    level = Math.floor(score / 50) + 1;
-    
-    // Update rewards
     updateRewards();
 }
 
 // Function to update rewards
 function updateRewards() {
-    const rewards = [
-        { name: "Security Novice", score: 50 },
-        { name: "Password Pro", score: 100 },
-        { name: "Phishing Detector", score: 150 },
-        { name: "Encryption Expert", score: 200 },
-        { name: "Cyber Guardian", score: 250 }
-    ];
-    
     rewardsList.innerHTML = '';
     rewards.forEach(reward => {
         const li = document.createElement('li');
@@ -135,6 +151,12 @@ function updateRewards() {
 function endGame() {
     alert(`Congratulations! You've completed all scenarios. Your final score is ${score}.`);
     startGame(); // Restart the game
+}
+
+// Function to set the current year in the footer
+function setCurrentYear() {
+    const currentYear = new Date().getFullYear();
+    currentYearElement.textContent = currentYear;
 }
 
 // Start the game when the page loads
