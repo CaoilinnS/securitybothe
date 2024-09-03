@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="CyberSafe: An interactive security awareness game for adults">
     <title>CyberSafe: Security Awareness Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <h1>CyberSafe: Security Awareness Game</h1>
-        <div id="user-info">
+        <div id="user-info" aria-live="polite">
             <span id="user-score">Score: 0</span>
             <span id="user-level">Level: 1</span>
         </div>
     </header>
     
     <main>
-        <section id="game-area">
+        <section id="game-area" aria-live="polite">
             <div id="scenario-container">
                 <h2 id="scenario-title">Scenario Title</h2>
                 <p id="scenario-description">Scenario description will appear here.</p>
@@ -24,11 +26,12 @@
             <div id="options-container">
                 <!-- Options will be dynamically inserted here -->
             </div>
+            <div id="feedback" class="hidden" aria-live="assertive"></div>
         </section>
         
         <section id="progress-area">
             <h3>Your Progress</h3>
-            <div id="progress-bar">
+            <div id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                 <div id="progress-fill"></div>
             </div>
         </section>
@@ -42,7 +45,7 @@
     </main>
     
     <footer>
-        <p>&copy; 2024 CyberSafe. All rights reserved.</p>
+        <p>&copy; <span id="current-year"></span> CyberSafe. All rights reserved.</p>
     </footer>
     
     <script src="script.js"></script>
