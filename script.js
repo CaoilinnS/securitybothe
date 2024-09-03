@@ -19,11 +19,14 @@ const progressBar = document.getElementById('progress-bar');
 const rewardsList = document.getElementById('rewards-list');
 const feedbackElement = document.getElementById('feedback');
 const currentYearElement = document.getElementById('current-year');
-const startPage = document.getElementById('start-page');
-const gameContainer = document.getElementById('game-container');
 const startButton = document.getElementById('start-button');
+const gameArea = document.getElementById('game-area');
+const progressArea = document.getElementById('progress-area');
+const rewardsArea = document.getElementById('rewards-area');
+const userInfo = document.getElementById('user-info');
+const startScreen = document.getElementById('start-screen');
 
-// Game scenarios (Example of 10 scenarios added)
+// Game scenarios
 const allScenarios = [
     {
         title: "Suspicious Email",
@@ -41,7 +44,24 @@ const allScenarios = [
             "This could spread the phishing attempt to others."
         ]
     },
-    // More scenarios here...
+    // Additional scenarios here...
+    {
+        title: "Lost Device",
+        description: "You lost your smartphone while traveling. What should you do first?",
+        options: [
+            { text: "Buy a new phone", correct: false },
+            { text: "Call your provider to lock your SIM card", correct: true },
+            { text: "Change your social media passwords", correct: true },
+            { text: "Notify friends and family through social media", correct: false }
+        ],
+        explanations: [
+            "Buying a new phone does not secure your lost device.",
+            "Locking your SIM card will prevent unauthorized use of your mobile data and calls.",
+            "Changing your passwords can help protect your accounts from unauthorized access.",
+            "Notifying through social media may alert the wrong people about your loss."
+        ]
+    },
+    // Ensure you add up to 50 scenarios following the format above.
 ];
 
 // Rewards data
@@ -55,10 +75,12 @@ const rewards = [
 
 // Function to start the game
 function startGame() {
-    // Hide the start page and show the game container
-    startPage.classList.add('hidden');
-    gameContainer.classList.remove('hidden');
-    
+    startScreen.classList.add('hidden');
+    gameArea.classList.remove('hidden');
+    progressArea.classList.remove('hidden');
+    rewardsArea.classList.remove('hidden');
+    userInfo.classList.remove('hidden');
+
     currentQuestionIndex = 0;
     score = 0;
     level = 1;
@@ -67,6 +89,9 @@ function startGame() {
     loadQuestion();
     setCurrentYear();
 }
+
+// Attach event listener to the start button
+startButton.addEventListener('click', startGame);
 
 // Function to get random questions
 function getRandomQuestions(num) {
@@ -99,27 +124,24 @@ function selectOption(index) {
     const correct = question.options[index].correct;
     const explanation = question.explanations[index];
 
-    if (correct) {
-        score += POINTS_PER_QUESTION;
-        showFeedback(`Correct! ${explanation}`, true);
-    } else {
-        showFeedback(`Incorrect. ${explanation}`, false);
-    }
+    showFeedback(correct ? `Correct! ${explanation}` : `Incorrect. ${explanation}`, correct);
 
-    currentQuestionIndex++;
-    if (currentQuestionIndex >= QUESTIONS_PER_GAME) {
-        setTimeout(endGame, 2000); // End game after 2 seconds
-    } else {
-        updateUI();
-        setTimeout(loadQuestion, 2000); // Load next question after 2 seconds
-    }
+    setTimeout(() => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex >= QUESTIONS_PER_GAME) {
+            endGame();
+        } else {
+            loadQuestion();
+            updateUI();
+        }
+    }, 2000); // Delay to allow players to read feedback before moving to the next question
 }
 
 // Function to show feedback
 function showFeedback(message, isCorrect) {
     feedbackElement.textContent = message;
-    feedbackElement.classList.remove('hidden', 'correct', 'incorrect');
-    feedbackElement.classList.add(isCorrect ? 'correct' : 'incorrect');
+    feedbackElement.className = isCorrect ? 'correct' : 'incorrect'; // Update with appropriate class
+    feedbackElement.classList.remove('hidden');
 }
 
 // Function to hide feedback
@@ -130,4 +152,39 @@ function hideFeedback() {
 // Function to update the UI
 function updateUI() {
     userScore.textContent = `Score: ${score}`;
-    level = Math.floor(score
+    userLevel.textContent = `Level: ${level}`;
+
+    const progress = (currentQuestionIndex / QUESTIONS_PER_GAME) * 100;
+    progressFill.style.width = `${progress}%`;
+    progressBar.setAttribute('aria-valuenow', progress);
+
+    updateRewards();
+}
+
+// Function to update rewards
+function updateRewards() {
+    rewardsList.innerHTML = '';
+    rewards.forEach(reward => {
+        const li = document.createElement('li');
+        li.textContent = reward.name;
+        li.style.opacity = score >= reward.score ? '1' : '0.5';
+        rewardsList.appendChild(li);
+    });
+}
+
+// Function to end the game
+function endGame() {
+    alert(`Congratulations! You've completed the game. Your final score is ${score}. You reached level ${level}!`);
+    startGame(); // Restart the game for another round
+}
+
+// Function to set the current year in the footer
+function setCurrentYear() {
+    const currentYear = new Date().getFullYear();
+    currentYearElement.textContent = currentYear;
+}
+
+// Start the game when the page loads
+window.addEventListener('load', () => {
+    startScreen.classList.remove('hidden');
+});
