@@ -19,6 +19,9 @@ const progressBar = document.getElementById('progress-bar');
 const rewardsList = document.getElementById('rewards-list');
 const feedbackElement = document.getElementById('feedback');
 const currentYearElement = document.getElementById('current-year');
+const startPage = document.getElementById('start-page');
+const gameContainer = document.getElementById('game-container');
+const startButton = document.getElementById('start-button');
 
 // Game scenarios (Example of 10 scenarios added)
 const allScenarios = [
@@ -52,6 +55,10 @@ const rewards = [
 
 // Function to start the game
 function startGame() {
+    // Hide the start page and show the game container
+    startPage.classList.add('hidden');
+    gameContainer.classList.remove('hidden');
+    
     currentQuestionIndex = 0;
     score = 0;
     level = 1;
@@ -123,38 +130,4 @@ function hideFeedback() {
 // Function to update the UI
 function updateUI() {
     userScore.textContent = `Score: ${score}`;
-    level = Math.floor(score / 50) + 1;
-    userLevel.textContent = `Level: ${level}`;
-
-    const progress = (currentQuestionIndex / QUESTIONS_PER_GAME) * 100;
-    progressFill.style.width = `${progress}%`;
-    progressBar.setAttribute('aria-valuenow', progress);
-
-    updateRewards();
-}
-
-// Function to update rewards
-function updateRewards() {
-    rewardsList.innerHTML = '';
-    rewards.forEach(reward => {
-        const li = document.createElement('li');
-        li.textContent = reward.name;
-        li.style.opacity = score >= reward.score ? '1' : '0.5';
-        rewardsList.appendChild(li);
-    });
-}
-
-// Function to end the game
-function endGame() {
-    alert(`Congratulations! You've completed the game. Your final score is ${score}. You reached level ${level}!`);
-    startGame(); // Restart the game
-}
-
-// Function to set the current year in the footer
-function setCurrentYear() {
-    const currentYear = new Date().getFullYear();
-    currentYearElement.textContent = currentYear;
-}
-
-// Start the game when the page loads
-window.addEventListener('load', startGame);
+    level = Math.floor(score
