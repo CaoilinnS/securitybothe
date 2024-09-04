@@ -425,4 +425,9 @@ document.addEventListener('DOMContentLoaded', function() {
         alert(`Game over! Your score: ${score}`);
         restartButton.classList.remove('hidden');
     }
-});
+
+// Function to set the current year in the footer
+    function setCurrentYear() {
+    const currentYear = new Date().getFullYear();
+    currentYearElement.textContent = currentYear;
+    };
