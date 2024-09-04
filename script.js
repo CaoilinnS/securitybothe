@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Sharing general, non-personal updates on social media can help you stay engaged without exposing sensitive information."
         // Additional scenarios go here
             ]
-        };
+        }
 
     function startGame() {
         startButton.classList.add('hidden');
