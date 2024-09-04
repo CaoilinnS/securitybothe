@@ -199,7 +199,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Asking friends for help may not be the most effective way to handle a suspected malware infection."
             ]
         },
-        },
                 {
             title: "Suspicious Email",
             description: "You receive an email claiming to be from your bank asking you to click a link and verify your account details. What do you do?",
