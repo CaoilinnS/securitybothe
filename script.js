@@ -5,15 +5,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const progressArea = document.getElementById('progress-area');
     const rewardsArea = document.getElementById('rewards-area');
     const userInfo = document.getElementById('user-info');
-    const feedbackElement = document.getElementById('feedback');
-    
+
     let currentQuestionIndex = 0;
     let score = 0;
     let level = 1;
+    
+    // Debugging: Log the elements to confirm they exist
+    console.log('Start Button:', startButton);
+    console.log('Restart Button:', restartButton);
+    console.log('Game Area:', gameArea);
+    console.log('Progress Area:', progressArea);
+    console.log('Rewards Area:', rewardsArea);
+    console.log('User Info:', userInfo);
 
-    // Debugging: Check if buttons are found and listeners are attached
-    if (!startButton || !restartButton) {
-        console.error('Start or restart button not found in the DOM');
+    if (!startButton || !gameArea || !progressArea || !rewardsArea || !userInfo) {
+        console.error('One or more elements were not found in the DOM');
+        return;
     }
 
     startButton.addEventListener('click', function() {
@@ -28,34 +35,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function startGame() {
         // Ensure correct elements are shown/hidden
+        console.log('Start Game function called');
+        
         startButton.classList.add('hidden'); // Hide start button
-        restartButton.classList.add('hidden'); // Ensure restart button is hidden at the start
         gameArea.classList.remove('hidden'); // Show game area
         progressArea.classList.remove('hidden');
         rewardsArea.classList.remove('hidden');
         userInfo.classList.remove('hidden');
-        
+
         // Reset game variables
-        currentQuestionIndex = 0;
-        score = 0;
-        level = 1;
         loadQuestion(); // Call the function that loads the questions
     }
 
     function restartGame() {
-        console.log('Game restarted'); 
+        console.log('Game restarted');
         // Reset game variables and UI components to restart
-        score = 0;
-        level = 1;
-        currentQuestionIndex = 0;
         startGame(); // Restart the game by calling startGame()
     }
 
     function loadQuestion() {
-        console.log('Loading question ' + (currentQuestionIndex + 1));
-        // Load questions and handle the game logic here
-    }
-});
+        console.log('Loading question');
+        // Implement your logic here
 
 
     const allScenarios = [
@@ -333,6 +333,9 @@ document.addEventListener('DOMContentLoaded', function() {
             ]
         }]
 
+    }
+});
+        
     function startGame() {
         startButton.classList.add('hidden');
         gameArea.classList.remove('hidden');
