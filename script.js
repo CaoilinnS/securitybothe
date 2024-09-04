@@ -330,7 +330,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Disabling privacy settings on social media accounts can compromise your personal information and make it accessible to anyone.",
                 "Sharing general, non-personal updates on social media can help you stay engaged without exposing sensitive information."
         // Additional scenarios go here
-    ];
+            ]
+        };
 
     function startGame() {
         startButton.classList.add('hidden');
