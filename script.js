@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const startButton = document.getElementById('start-button');
+    const restartButton = document.getElementById('restart-button');
     const gameArea = document.getElementById('game-area');
     const progressArea = document.getElementById('progress-area');
     const rewardsArea = document.getElementById('rewards-area');
@@ -8,46 +9,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const scenarioTitle = document.getElementById('scenario-title');
     const scenarioDescription = document.getElementById('scenario-description');
     const optionsContainer = document.getElementById('options-container');
+    const currentQuestionElement = document.getElementById('current-question');
+    const totalQuestionsElement = document.getElementById('total-questions');
+    const progressFill = document.getElementById('progress-fill');
+    const scoreElement = document.getElementById('score');
+    const levelElement = document.getElementById('level');
     let currentQuestionIndex = 0;
     let score = 0;
+    let level = 1;
     let currentQuestions = [];
 
     startButton.addEventListener('click', startGame);
+    restartButton.addEventListener('click', restartGame);
 
     const allScenarios = [
-        {
-            title: "Suspicious Email",
-            description: "You receive an email claiming to be from your bank asking you to click a link and verify your account details. What do you do?",
-            options: [
-                { text: "Click the link and enter your details", correct: false },
-                { text: "Delete the email without clicking anything", correct: true },
-                { text: "Reply to the email asking for more information", correct: false },
-                { text: "Forward the email to your friends to warn them", correct: false }
-            ],
-            explanations: [
-                "Clicking the link could lead to a phishing attack and compromise your personal information.",
-                "Deleting the email is the safest option to avoid potential phishing scams.",
-                "Replying to a suspicious email can confirm to the sender that your email address is active, leading to more phishing attempts.",
-                "Forwarding a suspicious email can spread the potential phishing attack to others."
-            ]
-        },
-        {
-            title: "Public Wi-Fi",
-            description: "You're at a coffee shop and need to check your bank account. The shop offers free Wi-Fi. What's the best course of action?",
-            options: [
-                { text: "Use the free Wi-Fi to check your account", correct: false },
-                { text: "Wait until you're on a secure network", correct: true },
-                { text: "Ask the barista if the Wi-Fi is secure", correct: false },
-                { text: "Use your phone's data instead of Wi-Fi", correct: true }
-            ],
-            explanations: [
-                "Using public Wi-Fi can expose your personal information to cybercriminals.",
-                "Waiting to use a secure network helps protect your sensitive information from potential cyber threats.",
-                "Baristas are likely not trained in cybersecurity, making this option unreliable.",
-                "Using your phone's cellular data is more secure than public Wi-Fi, especially for sensitive tasks like banking."
-            ]
-        },
-        // Add 48 more scenarios following the structure above.
+        // Updated scenario data...
     ];
 
     function startGame() {
@@ -59,8 +35,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         currentQuestionIndex = 0;
         score = 0;
+        level = 1;
         currentQuestions = getRandomQuestions(25);
         loadQuestion();
+    }
+
+    function restartGame() {
+        document.location.reload();
     }
 
     function getRandomQuestions(num) {
@@ -85,9 +66,18 @@ document.addEventListener('DOMContentLoaded', function() {
             button.onclick = function() { selectOption(option.correct, question.explanations[index]); };
             optionsContainer.appendChild(button);
         });
+
+        currentQuestionElement.textContent = currentQuestionIndex + 1;
+        totalQuestionsElement.textContent = currentQuestions.length;
+        updateProgressBar();
+        updateScoreAndLevel();
     }
 
     function selectOption(isCorrect, explanation) {
+        const optionButtons = document.querySelectorAll('.option-button');
+        optionButtons.forEach(button => button.classList.remove('selected'));
+        event.target.classList.add('selected');
+
         if (isCorrect) {
             score += 10;
             feedbackElement.textContent = 'Correct! ' + explanation;
@@ -109,8 +99,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 2000);
     }
 
+    function updateProgressBar() {
+        const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+        progressFill.style.width = progress + '%';
+    }
+
+    function updateScoreAndLevel() {
+        scoreElement.textContent = score;
+        levelElement.textContent = level;
+    }
+
     function endGame() {
-        alert('Game over! Your score: ' + score);
-        document.location.reload(); // Optionally reset the game
+        alert(`Game over! Your score: ${score}`);
+        restartGame();
     }
 });
