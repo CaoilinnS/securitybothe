@@ -44,7 +44,7 @@ main {
     align-items: center;
 }
 
-#start-button {
+#start-button, #restart-button {
     background-color: var(--secondary-color);
     color: var(--white);
     border: none;
@@ -52,11 +52,13 @@ main {
     padding: 1rem 2rem;
     font-size: 1.2rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
-#start-button:hover {
+#start-button:hover, #restart-button:hover,
+#start-button:focus, #restart-button:focus {
     background-color: var(--highlight-color);
+    transform: scale(1.05);
 }
 
 .game-area, #progress-area, #rewards-area, #user-info {
@@ -90,6 +92,10 @@ main {
 .option-button:hover, .option-button:focus {
     background-color: #27ae60;
     transform: scale(1.05);
+}
+
+.option-button.selected {
+    background-color: var(--highlight-color);
 }
 
 #progress-bar {
@@ -129,7 +135,7 @@ main {
         font-size: 1.5rem;
     }
 
-    .option-button, #start-button {
+    .option-button, #start-button, #restart-button {
         padding: 0.8rem;
         font-size: 0.9rem;
     }
